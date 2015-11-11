@@ -55,7 +55,7 @@ std::vector<sf::Vector2i> Rook::getPositions(int x, int y, PieceType type, const
     //esse algoritmo pode ser simplificado
     // frente
 
-    for (int i = 1; i < 7; ++i) { // um passinho pra frente...
+    for (int i = 1; i < 8; ++i) { // um passinho pra frente...
 
         auto y1 = (y + i) > 7 ? 7 : (y + i); // verifica que eu não passei das bordas
         auto piece = board[getArrayPos(x, y1)]->getPiece();
@@ -72,7 +72,7 @@ std::vector<sf::Vector2i> Rook::getPositions(int x, int y, PieceType type, const
         }
     }
 
-    for (int i = 1; i < 7; ++i) { // um passinho pra trás...
+    for (int i = 1; i < 8; ++i) { // um passinho pra trás...
         auto y1 = (y - i) < 0 ? 0 : y - i;
         auto piece = board[getArrayPos(x, y1)]->getPiece();
         if (piece) {
@@ -87,7 +87,7 @@ std::vector<sf::Vector2i> Rook::getPositions(int x, int y, PieceType type, const
     }
 
 
-    for (int i = 1; i < 7; ++i) { // girando, girando, girando pro lado
+    for (int i = 1; i < 8; ++i) { // girando, girando, girando pro lado
         auto x1 = (x - i) < 0 ? 0 : x - i;
         auto piece = board[getArrayPos(x1, y)]->getPiece();
         if (piece) {
@@ -101,7 +101,7 @@ std::vector<sf::Vector2i> Rook::getPositions(int x, int y, PieceType type, const
 
     }
 
-    for (int i = 1; i < 7; ++i) { // girando, girando, girando pro outro
+    for (int i = 1; i < 8; ++i) { // girando, girando, girando pro outro
         auto x1 = (x + i) > 7 ? 7 : x + i;
         auto piece = board[getArrayPos(x1, y)]->getPiece();
         if (piece) {
