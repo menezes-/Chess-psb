@@ -50,12 +50,50 @@ std::vector<sf::Vector2i> Knight::validPositions(const InternalBoard &board) {
 }
 
 std::vector<sf::Vector2i> Rook::validPositions(const InternalBoard &board) {
-    return std::vector<sf::Vector2i>();
+    auto valid = std::vector<sf::Vector2i>{};
+    auto y = board_pos.y;
+    auto x = board_pos.x;
+
+    /// NAO FUNCIONA
+
+    //esse algoritmo pode ser simplificado
+    // frente
+    for (int i = y; i < 8 - y; ++i) {
+
+        auto piece = board[getArrayPos(x, y + i)]->getPiece();
+
+        if (piece) {
+            if (piece->getType()[0] != type[0]) {
+                valid.push_back(sf::Vector2i{x, y + i});
+            }
+            break;
+
+        } else {
+            valid.push_back(sf::Vector2i{x, y + i});
+        }
+    }
+
+    for (int i = 0; i < y; ++i) {
+        auto piece = board[getArrayPos(x, y - i)]->getPiece();
+        if (piece) {
+            if (piece->getType()[0] != type[0]) {
+                valid.push_back(sf::Vector2i{x, y - i});
+            }
+            break;
+        } else{
+            valid.push_back(sf::Vector2i{x, y - i});
+        }
+
+    }
+
+
+    return valid;
+
+
 }
 
 std::vector<sf::Vector2i> Pawn::validPositions(const InternalBoard &board) {
     std::vector<sf::Vector2i> valid_positions = std::vector<sf::Vector2i>{};
-    //PieceType type = getType();
     int modifier = type[0] ? -1 : 1;
     auto x = board_pos.x;
     auto y = board_pos.y;
