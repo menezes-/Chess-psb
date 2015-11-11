@@ -110,6 +110,11 @@ public:
 class Rook final : public Piece {
 
 public:
+    /*
+     * essa função foi declarada estática pois depois
+     * eu posso usá-la para calcular os movimentos da rainha
+     */
+    static std::vector<sf::Vector2i> getPositions(int x, int y, PieceType type, const InternalBoard &board);
     Rook(const PieceType &piece, ResourceManager &manager);
 
     std::vector<sf::Vector2i> validPositions(const InternalBoard &);

@@ -49,13 +49,9 @@ std::vector<sf::Vector2i> Knight::validPositions(const InternalBoard &board) {
     return std::vector<sf::Vector2i>();
 }
 
-std::vector<sf::Vector2i> Rook::validPositions(const InternalBoard &board) {
-    auto valid = std::vector<sf::Vector2i>{};
-    auto y = board_pos.y;
-    auto x = board_pos.x;
 
-    /// NAO FUNCIONA
-
+std::vector<sf::Vector2i> Rook::getPositions(int x, int y, PieceType type, const InternalBoard &board) {
+    std::vector<sf::Vector2i> valid = std::vector<sf::Vector2i>{};
     //esse algoritmo pode ser simplificado
     // frente
 
@@ -91,7 +87,41 @@ std::vector<sf::Vector2i> Rook::validPositions(const InternalBoard &board) {
     }
 
 
+    for (int i = 1; i < 7; ++i) { // girando, girando, girando pro lado
+        auto x1 = (x - i) < 0 ? 0 : x - i;
+        auto piece = board[getArrayPos(x1, y)]->getPiece();
+        if (piece) {
+            if (piece->getType()[0] != type[0]) {
+                valid.push_back(sf::Vector2i{x1, y});
+            }
+            break;
+        } else {
+            valid.push_back(sf::Vector2i{x1, y});
+        }
+
+    }
+
+    for (int i = 1; i < 7; ++i) { // girando, girando, girando pro outro
+        auto x1 = (x + i) > 7 ? 7 : x + i;
+        auto piece = board[getArrayPos(x1, y)]->getPiece();
+        if (piece) {
+            if (piece->getType()[0] != type[0]) {
+                valid.push_back(sf::Vector2i{x1, y});
+            }
+            break;
+        } else {
+            valid.push_back(sf::Vector2i{x1, y});
+        }
+
+    }
+
     return valid;
+
+
+}
+
+std::vector<sf::Vector2i> Rook::validPositions(const InternalBoard &board) {
+    return getPositions(board_pos.x, board_pos.y, type, board);
 
 
 }
