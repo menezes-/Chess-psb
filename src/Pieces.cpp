@@ -58,30 +58,34 @@ std::vector<sf::Vector2i> Rook::validPositions(const InternalBoard &board) {
 
     //esse algoritmo pode ser simplificado
     // frente
-    for (int i = y; i < 8 - y; ++i) {
 
-        auto piece = board[getArrayPos(x, y + i)]->getPiece();
+    for (int i = 1; i < 7; ++i) { // um passinho pra frente...
+
+        auto y1 = (y + i) > 7 ? 7 : (y + i); // verifica que eu não passei das bordas
+        auto piece = board[getArrayPos(x, y1)]->getPiece();
+
 
         if (piece) {
-            if (piece->getType()[0] != type[0]) {
-                valid.push_back(sf::Vector2i{x, y + i});
+            if (piece->getType()[0] != type[0]) {// se a peça contida aqui for inimiga é uma posição válida
+                valid.push_back(sf::Vector2i{x, y1});
             }
             break;
 
         } else {
-            valid.push_back(sf::Vector2i{x, y + i});
+            valid.push_back(sf::Vector2i{x, y1});
         }
     }
 
-    for (int i = 0; i < y; ++i) {
-        auto piece = board[getArrayPos(x, y - i)]->getPiece();
+    for (int i = 1; i < 7; ++i) { // um passinho pra trás...
+        auto y1 = (y - i) < 0 ? 0 : y - i;
+        auto piece = board[getArrayPos(x, y1)]->getPiece();
         if (piece) {
             if (piece->getType()[0] != type[0]) {
-                valid.push_back(sf::Vector2i{x, y - i});
+                valid.push_back(sf::Vector2i{x, y1});
             }
             break;
-        } else{
-            valid.push_back(sf::Vector2i{x, y - i});
+        } else {
+            valid.push_back(sf::Vector2i{x, y1});
         }
 
     }
