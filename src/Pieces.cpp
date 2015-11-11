@@ -75,8 +75,68 @@ std::vector<sf::Vector2i> Queen::validPositions(const InternalBoard &board) {
     return std::vector<sf::Vector2i>();
 }
 
+
+std::vector<sf::Vector2i> Bishop::getPositions(int x, int y, PieceType type, const InternalBoard &board) {
+    auto valid = std::vector<sf::Vector2i>{};
+
+
+    //lambdas \o/
+    auto valid_pos = [&type, &valid, &board](int j, int i) -> bool {
+
+        Piece *piece = board[getArrayPos(j, i)]->getPiece();
+        if (!piece) {
+            valid.push_back(sf::Vector2i{j, i});
+            return false; // não da break ainda
+        } else if (piece->getType()[0] != type[0]) {
+            valid.push_back(sf::Vector2i{j, i});
+            return true; // da break
+        } else {
+            return true; // da break
+        }
+
+
+    };
+
+    //diagonal positiva pra baixo
+    for (int j = x + 1, i = y + 1; j < 8 && i < 8; j++, i++) {
+
+        if (valid_pos(j, i)) {
+            break;
+        }
+
+
+    }
+
+    // diagonal positiva pra cima
+    for (int j = x - 1, i = y + 1; j > -1 && i < 8; j--, i++) {
+        if (valid_pos(j, i)) {
+            break;
+        }
+
+    }
+
+    //diagonal negativa pra cima
+    for (int j = x - 1, i = y - 1; j > -1 && i > -1; j--, i--) {
+        if (valid_pos(j, i)) {
+            break;
+        }
+    }
+
+    //diagonal positiva pra baixo
+    for (int j = x + 1, i = y - 1; j < 8 && i > -1; j++, i--) {
+        if (valid_pos(j, i)) {
+            break;
+        }
+
+    }
+
+
+    return valid;
+}
+
+
 std::vector<sf::Vector2i> Bishop::validPositions(const InternalBoard &board) {
-    return std::vector<sf::Vector2i>();
+    return getPositions(board_pos.x, board_pos.y, type, board);
 }
 
 std::vector<sf::Vector2i> Knight::validPositions(const InternalBoard &board) {
@@ -85,7 +145,7 @@ std::vector<sf::Vector2i> Knight::validPositions(const InternalBoard &board) {
 
 
 std::vector<sf::Vector2i> Rook::getPositions(int x, int y, PieceType type, const InternalBoard &board) {
-    std::vector<sf::Vector2i> valid = std::vector<sf::Vector2i>{};
+    auto valid = std::vector<sf::Vector2i>{};
     //esse algoritmo pode ser simplificado
     // frente
 
@@ -239,3 +299,4 @@ sf::Vector2i Piece::getBoardPos() const {
     return board_pos;
 
 }
+

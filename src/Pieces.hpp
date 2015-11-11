@@ -96,6 +96,12 @@ class Bishop final : public Piece {
 public:
     Bishop(const PieceType &piece, ResourceManager &manager);
 
+    /*
+    * essa função foi declarada estática pois depois
+    * eu posso usá-la para calcular os movimentos da rainha
+    */
+    static std::vector<sf::Vector2i> getPositions(int x, int y, PieceType type, const InternalBoard &board);
+
     std::vector<sf::Vector2i> validPositions(const InternalBoard &);
 };
 
@@ -103,6 +109,7 @@ class Knight final : public Piece {
 
 public:
     Knight(const PieceType &piece, ResourceManager &manager);
+
 
     std::vector<sf::Vector2i> validPositions(const InternalBoard &);
 };
@@ -115,6 +122,7 @@ public:
      * eu posso usá-la para calcular os movimentos da rainha
      */
     static std::vector<sf::Vector2i> getPositions(int x, int y, PieceType type, const InternalBoard &board);
+
     Rook(const PieceType &piece, ResourceManager &manager);
 
     std::vector<sf::Vector2i> validPositions(const InternalBoard &);

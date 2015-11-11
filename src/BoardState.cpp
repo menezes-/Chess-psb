@@ -45,6 +45,9 @@ void PieceSelectedState::handleEvent(Board &board, sf::Event event) {
                 selected->getPiece()->moveTo(target);
                 selected->setPiece(nullptr);
 
+                // troca para o próximo jogador
+                playing = !playing;
+
                 /*
                  * poderia pegar uma  const  referencia ao unique_ptr (ao invés do get), procurar ele no array de peças
                  * e setar sua posição para nullptr, o que em prática o deletaria (automáticamente). Porém como o numero de peças
@@ -53,8 +56,6 @@ void PieceSelectedState::handleEvent(Board &board, sf::Event event) {
 
             }
 
-            // troca para o próximo jogador
-            playing = !playing;
 
         }
 
