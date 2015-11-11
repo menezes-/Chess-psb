@@ -50,7 +50,6 @@ set(SOURCE_FILES
         src/Square.cpp
         src/Square.hpp
         src/BoardState.cpp)
-#message(WARNING  " aaaaaa  ${SFML_LIBRARIES}")
 
 add_executable(Chess ${SOURCE_FILES})
 set_target_properties(Chess PROPERTIES OUTPUT_NAME "Chess-${CMAKE_BUILD_TYPE}")

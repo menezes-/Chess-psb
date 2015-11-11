@@ -34,7 +34,8 @@ void NormalState::handleEvent(Board &board, sf::Event event) {
 
 void PieceSelectedState::handleEvent(Board &board, sf::Event event) {
     if (event.mouseButton.button == sf::Mouse::Left) {
-        if (Square *target = getClickedSquare(board, event)) {
+        Square *target = getClickedSquare(board, event);
+        if (target && selected->getPiece()->getType()[0] == playing /*garante que é a minha vez*/) {
 
             //garente que eu estou movendo a peça para um lugar válido
             auto result = std::find(last_valid_positions.begin(), last_valid_positions.end(), target->getBoardPos());
@@ -52,6 +53,9 @@ void PieceSelectedState::handleEvent(Board &board, sf::Event event) {
                  */
 
             }
+
+            // troca para o próximo jogador
+            playing = !playing;
 
         }
 

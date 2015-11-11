@@ -49,6 +49,9 @@ private:
     std::vector<sf::Vector2i> last_valid_positions;
     Square* selected;
 
+    // lembra quem está jogando brancas (0) ou pretas (1)
+    bool playing = 0;
+
 
 public:
 public:
