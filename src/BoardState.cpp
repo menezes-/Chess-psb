@@ -67,9 +67,9 @@ void PieceSelectedState::handleEvent(Board &board, sf::Event event) {
 
         }
 
-        //limpa quadrados selecionados
-        for (auto &i: board.getBoard()) {
-            i->setHighlight(false);
+        auto &internal_board = board.getBoard();
+        for (auto &i:last_valid_positions) {
+            internal_board[getArrayPos(i.x, i.y)]->setHighlight(false);
         }
 
         board.setBoardState(NORMAL);
