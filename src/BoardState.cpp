@@ -32,6 +32,8 @@ void NormalState::handleEvent(Board &board, sf::Event event) {
 }
 
 void PieceSelectedState::handleEvent(Board &board, sf::Event event) {
+
+
     if (event.mouseButton.button == sf::Mouse::Left) {
         Square *target = getClickedSquare(board, event);
         if (target && selected->getPiece()->getType()[0] == playing /*garante que é a minha vez*/) {
@@ -47,6 +49,12 @@ void PieceSelectedState::handleEvent(Board &board, sf::Event event) {
 
                 // troca para o próximo jogador
                 playing = !playing;
+                //atualiza texto informativo
+                if (playing) {
+                    board.setDisplayText("Pretas Jogam");
+                } else {
+                    board.setDisplayText("Brancas Jogam");
+                }
 
                 /*
                  * poderia pegar uma  const  referencia ao unique_ptr (ao invés do get), procurar ele no array de peças

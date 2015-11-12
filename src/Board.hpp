@@ -4,7 +4,7 @@
 #include <memory>
 #include <SFML/Graphics.hpp>
 #include <SFML/Window.hpp>
-
+#include <sstream>
 #include "ResourceManager.hpp"
 #include "Square.hpp"
 
@@ -76,6 +76,9 @@ private:
     std::array<pieceRef, 32> pieces;
     sf::Vector2u size;
 
+    sf::Text display_text;
+
+
 
     virtual void draw(sf::RenderTarget &target, sf::RenderStates states) const;
 
@@ -92,6 +95,8 @@ public:
     void setBoardState(EState state);
 
     void setSize(const sf::Vector2u &size);
+
+    void setDisplayText(const std::string &);
 
     void initBoard();
 
