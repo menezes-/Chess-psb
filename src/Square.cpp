@@ -20,9 +20,9 @@ void Square::setBoardSize(const sf::Vector2u &board_size) {
 
     sf::Color color;
     if (board_pos.y % 2 == 0) {
-        color = (board_pos.x % 2) == 0 ? sf::Color::White : sf::Color::Black;
+        color = (board_pos.x % 2) == 0 ? sf::Color{229, 229, 229}/*WHITE*/ : sf::Color{127, 127, 127}/*BLACK*/;
     } else {
-        color = (board_pos.x % 2) == 0 ? sf::Color::Black : sf::Color::White;
+        color = (board_pos.x % 2) == 0 ? sf::Color{127, 127, 127} : sf::Color{229, 229, 229};
     }
     sprite.setSize(sf::Vector2f{board_size.x / 8.0f, board_size.y / 8.0f});
     sprite.setFillColor(color);
