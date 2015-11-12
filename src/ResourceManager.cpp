@@ -16,6 +16,10 @@ ResourceManager::ResourceManager(const std::string &resource_path) : resource_pa
 
 
     }
+    // carega a fonte
+    std::ostringstream font_path;
+    font_path << resource_path << "Calibri.ttf";
+    font.loadFromFile(font_path.str());
 
 
 }
@@ -65,3 +69,6 @@ sf::Sprite ResourceManager::loadPiece(const std::bitset<7> &type) {
 
 }
 
+const sf::Font &ResourceManager::getFont() const {
+    return font;
+}
