@@ -12,9 +12,9 @@ project(Chess)
 # e alterar a variavel SFML_ROOT abaixo para apontar para a sua instalação do SFML
 
 #flags
-set(CMAKE_CXX_FLAGS "-std=c++11 -Wall -Werror")
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11 -Wall -Werror")
 set(CMAKE_EXE_LINKER_FLAGS "-static-libgcc -static-libstdc++")
-set(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS} -s -O2 -DNDEBUG  ")
+set(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS} -s -O3 -DNDEBUG  ")
 set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS} -g -O0")
 set(SFML_STATIC_LIBRARIES TRUE)
 
@@ -59,5 +59,5 @@ if (SFML_FOUND)
     target_link_libraries(Chess ${SFML_LIBRARIES})
     target_link_libraries(Chess ${SFML_DEPENDENCIES})
 else ()
-    message(SEND_ERROR "SFML library not found. Please set SFML_ROOT.")
+    message(SEND_ERROR "SFML não encontrado! Lembre de setar SFML_ROOT")
 endif ()
