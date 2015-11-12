@@ -28,6 +28,19 @@ void NormalState::handleEvent(Board &board, sf::Event event) {
             board.pieceSelectedState->setLastValidPos(pos);
             board.pieceSelectedState->setSelectedPiece(res);
         }
+    } else if (event.type == sf::Event::KeyPressed) {
+
+        if (
+                sf::Keyboard::isKeyPressed(sf::Keyboard::LControl) &&
+                sf::Keyboard::isKeyPressed(sf::Keyboard::Z)
+                ) {
+
+            board.restore();
+
+
+        }
+
+
     }
 }
 
@@ -42,8 +55,13 @@ void PieceSelectedState::handleEvent(Board &board, sf::Event event) {
             auto result = std::find(last_valid_positions.begin(), last_valid_positions.end(), target->getBoardPos());
             if (result != std::end(last_valid_positions)) {
 
+                //adiciona histórico
+
+                board.addHistory(selected, selected->getPiece());
+
                 // Move a peça de lugar e remove
                 // a referencia do quadrado original
+
                 selected->getPiece()->moveTo(target);
                 selected->setPiece(nullptr);
 

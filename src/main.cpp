@@ -12,6 +12,7 @@ int main(int argc, char **argv) {
                             sf::Style::Titlebar | sf::Style::Close);
     window.setVerticalSyncEnabled(true);
     window.setMouseCursorVisible(true);
+    window.setKeyRepeatEnabled(false);
     ResourceManager rm{};
     Board board{rm};
     board.setSize(sf::Vector2u{600, 600});
@@ -45,7 +46,10 @@ int main(int argc, char **argv) {
                     board.setSize(window.getSize());
                     break;
                 case sf::Event::MouseButtonPressed:
-                    board.mousePressed(event);
+                    board.handleEvent(event);
+                    break;
+                case sf::Event::KeyPressed:
+                    board.handleEvent(event);
                     break;
 #ifndef NDEBUG
                 case sf::Event::MouseMoved:

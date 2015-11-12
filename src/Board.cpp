@@ -15,7 +15,6 @@ Board::Board(ResourceManager &rm) : rm{rm} {
     display_text.setString("Brancas Jogam");
 
 
-
 }
 
 void Board::draw(sf::RenderTarget &target, sf::RenderStates states) const {
@@ -126,7 +125,7 @@ void Board::update(sf::Time time) {
 
 }
 
-void Board::mousePressed(sf::Event event) {
+void Board::handleEvent(sf::Event event) {
 
 
     state->handleEvent(*this, event);
@@ -178,5 +177,28 @@ const std::array<squareRef, 64> &Board::getBoard() const {
 
 void Board::setDisplayText(const std::string &string) {
     display_text.setString(string);
+
+}
+
+void Board::restore() {
+    if (!history.empty()) {
+        his_item prev = history.back();
+        // acha aonde a peça se encontra atualmente e a muda
+        prev.first->setPiece(prev.second);
+        for (auto &item: board) {
+            if (item->getPiece() == prev.second) {
+                item->setPiece(nullptr);
+                break;
+            }
+        }
+
+
+    }
+
+}
+
+void Board::addHistory(Square *square, Piece *piece) {
+
+    history.push_back(his_item{square, piece});
 
 }
