@@ -72,7 +72,16 @@ std::vector<sf::Vector2i> King::validPositions(const InternalBoard &board) {
 }
 
 std::vector<sf::Vector2i> Queen::validPositions(const InternalBoard &board) {
-    return std::vector<sf::Vector2i>();
+    auto valid = std::vector<sf::Vector2i>();
+
+    auto r = Rook::getPositions(board_pos.x, board_pos.y, type, board);
+    auto b = Bishop::getPositions(board_pos.x, board_pos.y, type, board);
+
+    std::move(r.begin(), r.end(), std::back_inserter(valid));
+    std::move(b.begin(), b.end(), std::back_inserter(valid));
+
+
+    return valid;
 }
 
 
@@ -149,64 +158,47 @@ std::vector<sf::Vector2i> Rook::getPositions(int x, int y, PieceType type, const
     //esse algoritmo pode ser simplificado
     // frente
 
+
+
+    //lambdas \o/
+    auto valid_pos = [&type, &valid, &board](int j, int i) -> bool {
+
+        Piece *piece = board[getArrayPos(j, i)]->getPiece();
+        if (!piece) {
+            valid.push_back(sf::Vector2i{j, i});
+            return false; // não da break ainda
+        } else if (piece->getType()[0] != type[0]) {
+            valid.push_back(sf::Vector2i{j, i});
+            return true; // da break
+        } else {
+            return true; // da break
+        }
+
+
+    };
+
+
     for (int i = 1; i < 8; ++i) { // um passinho pra frente...
 
         auto y1 = (y + i) > 7 ? 7 : (y + i); // verifica que eu não passei das bordas
-        auto piece = board[getArrayPos(x, y1)]->getPiece();
 
-
-        if (piece) {
-            if (piece->getType()[0] != type[0]) {// se a peça contida aqui for inimiga é uma posição válida
-                valid.push_back(sf::Vector2i{x, y1});
-            }
-            break;
-
-        } else {
-            valid.push_back(sf::Vector2i{x, y1});
-        }
+        if (valid_pos(x, y1)) break;
     }
 
     for (int i = 1; i < 8; ++i) { // um passinho pra trás...
         auto y1 = (y - i) < 0 ? 0 : y - i;
-        auto piece = board[getArrayPos(x, y1)]->getPiece();
-        if (piece) {
-            if (piece->getType()[0] != type[0]) {
-                valid.push_back(sf::Vector2i{x, y1});
-            }
-            break;
-        } else {
-            valid.push_back(sf::Vector2i{x, y1});
-        }
+        if (valid_pos(x, y1)) break;
 
     }
 
-
     for (int i = 1; i < 8; ++i) { // girando, girando, girando pro lado
         auto x1 = (x - i) < 0 ? 0 : x - i;
-        auto piece = board[getArrayPos(x1, y)]->getPiece();
-        if (piece) {
-            if (piece->getType()[0] != type[0]) {
-                valid.push_back(sf::Vector2i{x1, y});
-            }
-            break;
-        } else {
-            valid.push_back(sf::Vector2i{x1, y});
-        }
-
+        if (valid_pos(x1, y)) break;
     }
 
     for (int i = 1; i < 8; ++i) { // girando, girando, girando pro outro
         auto x1 = (x + i) > 7 ? 7 : x + i;
-        auto piece = board[getArrayPos(x1, y)]->getPiece();
-        if (piece) {
-            if (piece->getType()[0] != type[0]) {
-                valid.push_back(sf::Vector2i{x1, y});
-            }
-            break;
-        } else {
-            valid.push_back(sf::Vector2i{x1, y});
-        }
-
+        if (valid_pos(x1, y)) break;
     }
 
     return valid;
