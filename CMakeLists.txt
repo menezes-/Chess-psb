@@ -10,16 +10,16 @@ project(Chess)
 # a partir do tutorial deles (que é bem fácil): http://www.sfml-dev.org/tutorials/2.3/compile-with-cmake.php
 # Ou seja, para compilar o projeto na sua máquina basta compilar o SFML EM MODO ESTÁTICO (ver no tutorial como)
 # e alterar a variavel SFML_ROOT abaixo para apontar para a sua instalação do SFML
-
-#flags
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11 -Wall -Werror")
-set(CMAKE_EXE_LINKER_FLAGS "-static-libgcc -static-libstdc++")
-set(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS} -s -O3 -DNDEBUG  ")
-set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS} -g -O0")
-set(SFML_STATIC_LIBRARIES TRUE)
-
-
-set(SFML_ROOT "C:\\Program Files (x86)\\SFML")
+#                         |-------------------------------------------------|
+#flags                                                                      |
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11 -Wall -Werror")#         |
+set(CMAKE_EXE_LINKER_FLAGS "-static-libgcc -static-libstdc++")#             |
+set(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS} -s -O3 -DNDEBUG  ")#        |
+set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS} -g -O0")#                     |
+set(SFML_STATIC_LIBRARIES TRUE)#                                            |
+#                                                                           |
+#                                                                           |
+set(SFML_ROOT "C:\\Program Files (x86)\\SFML")# <---------------------------|
 
 if (WIN32 AND CMAKE_BUILD_TYPE STREQUAL "Release")
     set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -mwindows")
