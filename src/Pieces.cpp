@@ -48,27 +48,7 @@ std::vector<sf::Vector2i> King::validPositions(const InternalBoard &board) {
                                                                 {1, -1}
                                                         }};
 
-
-    for (auto i: offsets) {
-        // garante que eu não passe dos limites
-        int x = std::max(0, std::min(i[0] + board_pos.x, 7));
-        int y = std::max(0, std::min(i[1] + board_pos.y, 7));
-
-        Piece *piece = board[getArrayPos(x, y)]->getPiece();
-        if (piece) {
-            if (piece->getType()[0] != type[0]) {// se a peça contida aqui for inimiga é uma posição válida
-                valid.push_back(sf::Vector2i{x, y});
-            }
-
-        } else {
-            valid.push_back(sf::Vector2i{x, y});
-        }
-
-
-    }
-
-
-    return valid;
+    return Piece::computeOffsetPositions(board, board_pos, type, offsets);
 }
 
 std::vector<sf::Vector2i> Queen::validPositions(const InternalBoard &board) {
@@ -149,7 +129,19 @@ std::vector<sf::Vector2i> Bishop::validPositions(const InternalBoard &board) {
 }
 
 std::vector<sf::Vector2i> Knight::validPositions(const InternalBoard &board) {
-    return std::vector<sf::Vector2i>();
+
+    static std::array<std::array<int, 2>, 8> offsets = {{
+                                                                {-2, 1},
+                                                                {-1, 2},
+                                                                {1, 2},
+                                                                {2, 1},
+                                                                {2, -1},
+                                                                {1, -2},
+                                                                {-1, -2},
+                                                                {-2, -1}
+                                                        }};
+
+    return Piece::computeOffsetPositions(board, board_pos, type, offsets);
 }
 
 
@@ -292,3 +284,29 @@ sf::Vector2i Piece::getBoardPos() const {
 
 }
 
+std::vector<sf::Vector2i> Piece::computeOffsetPositions(const InternalBoard &board, const sf::Vector2i &board_pos,
+                                                        const PieceType &type,
+                                                        std::array<std::array<int, 2>, 8> &offsets) {
+    auto valid = std::vector<sf::Vector2i>();
+    for (auto i: offsets) {
+        // garante que eu não passe dos limites
+        int x = std::max(0, std::min(i[0] + board_pos.x, 7));
+        int y = std::max(0, std::min(i[1] + board_pos.y, 7));
+
+        Piece *piece = board[getArrayPos(x, y)]->getPiece();
+        if (piece) {
+            if (piece->getType()[0] != type[0]) {// se a peça contida aqui for inimiga é uma posição válida
+                valid.push_back(sf::Vector2i{x, y});
+            }
+
+        } else {
+            valid.push_back(sf::Vector2i{x, y});
+        }
+
+
+    }
+
+
+    return valid;
+
+}

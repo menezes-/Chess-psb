@@ -64,6 +64,9 @@ public:
 
     virtual std::vector<sf::Vector2i> validPositions(const InternalBoard &) = 0;
 
+    static std::vector<sf::Vector2i> computeOffsetPositions(const InternalBoard &, const sf::Vector2i &,
+                                                            const PieceType &, std::array<std::array<int, 2>, 8> &);
+
     // permite que o destruidor da classe derivada seja chamado a partir de um ponteiro
     // para a classe pai
     virtual ~Piece() = default;
