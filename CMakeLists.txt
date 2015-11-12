@@ -8,7 +8,7 @@ project(Chess)
 # Como o projeto foi desenvolvido com o GCC 5 através do mingw os downloads "pré prontos"
 # do SFML não serviam, por isso compilei o SFML na mão
 # a partir do tutorial deles (que é bem fácil): http://www.sfml-dev.org/tutorials/2.3/compile-with-cmake.php
-# Ou seja, para compilar o projeto na sua máquina basta compilar o SFML EM MODO ESTÁTICO (ver no tutorial como)
+# Ou seja, para compilar o projeto na sua máquina basta compilar o SFML EM MODO ESTÁTICO (ver no tutorial ↑ como)
 # e alterar a variavel SFML_ROOT abaixo para apontar para a sua instalação do SFML
 #                         |-------------------------------------------------|
 #flags                                                                      |
