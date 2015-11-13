@@ -290,6 +290,8 @@ std::vector<sf::Vector2i> Piece::computeOffsetPositions(const InternalBoard &boa
     auto valid = std::vector<sf::Vector2i>();
     for (auto i: offsets) {
         // garante que eu não passe dos limites
+        //  TODO: dar um continue no for se não da erro quando a peça chega perto 
+        // das bordas
         int x = std::max(0, std::min(i[0] + board_pos.x, 7));
         int y = std::max(0, std::min(i[1] + board_pos.y, 7));
 
