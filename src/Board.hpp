@@ -5,7 +5,6 @@
 #include <SFML/Graphics.hpp>
 #include <SFML/Window.hpp>
 #include <sstream>
-#include <utility>
 #include "ResourceManager.hpp"
 #include "Square.hpp"
 
@@ -68,7 +67,6 @@ public:
 
 using squareRef = std::unique_ptr<Square>;
 using pieceRef = std::unique_ptr<Piece>;
-using his_item = std::pair<Square *, Piece *>;
 
 
 class Board : public sf::Drawable {
@@ -79,8 +77,6 @@ private:
     sf::Vector2u size;
 
     sf::Text display_text;
-
-    std::vector<his_item> history;
 
 
 
@@ -106,17 +102,13 @@ public:
 
     Board(ResourceManager &rm);
 
-    void handleEvent(sf::Event);
+    void mousePressed(sf::Event);
 
     void update(sf::Time);
 
     const std::array<squareRef, 64> &getBoard() const;
 
     Piece *makePiece(PieceType type, sf::Vector2i vector2);
-
-    void restore();
-
-    void addHistory(Square *, Piece *);
 
 
 };
