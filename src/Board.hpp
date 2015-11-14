@@ -15,7 +15,6 @@ class Board;
 
 enum EState : short {
     NORMAL,
-    MOVING_PIECE,
     PIECE_SELECTED,
     WIN,
 };
@@ -28,9 +27,6 @@ public:
     virtual void handleEvent(Board &board, sf::Event event) { }
 
     Square *getClickedSquare(Board &board, sf::Event event) const;
-
-    virtual void update(Board &board, sf::Time) { };
-
 
 };
 
@@ -54,9 +50,22 @@ private:
 
 
 public:
-public:
     void setLastValidPos(const std::vector<sf::Vector2i> &last_valid_positions);
     void setSelectedPiece(Square*);
+
+    virtual void handleEvent(Board &board, sf::Event event);
+
+};
+
+class WinState : public BoardState {
+
+    /*
+     * Estado final
+     * Ele não faz nada.
+     *
+     */
+
+public:
 
     virtual void handleEvent(Board &board, sf::Event event);
 
@@ -90,6 +99,7 @@ public:
     // estados de transição do tabuleiro
     std::unique_ptr<NormalState> normalState;
     std::unique_ptr<PieceSelectedState> pieceSelectedState;
+    std::unique_ptr<WinState> winState;
     BoardState *state;
 
     void setBoardState(EState state);
@@ -103,8 +113,6 @@ public:
     Board(ResourceManager &rm);
 
     void mousePressed(sf::Event);
-
-    void update(sf::Time);
 
     const std::array<squareRef, 64> &getBoard() const;
 

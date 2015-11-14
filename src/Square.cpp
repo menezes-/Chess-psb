@@ -68,7 +68,7 @@ sf::Vector2i Square::getBoardPos() const {
 
 void Square::setHighlight(bool v) {
     if (v) {
-        sprite.setOutlineColor(sf::Color::Yellow);
+        sprite.setOutlineColor(highlightColor);
         sprite.setOutlineThickness(-3);
     } else {
         sprite.setOutlineThickness(0);
@@ -77,3 +77,9 @@ void Square::setHighlight(bool v) {
 }
 
 
+void Square::setHighlight(const sf::Color &color) {
+
+    highlightColor = color;
+    setHighlight(true);
+
+}

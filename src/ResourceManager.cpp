@@ -34,8 +34,7 @@ sf::Sprite ResourceManager::loadPiece(const std::bitset<7> &type) {
 
     int index = 0;
 
-    auto out = ((type.to_ulong()) &
-                (Pieces::KING | Pieces::QUEEN | Pieces::BISHOP | Pieces::KNIGHT | Pieces::PAWN | Pieces::ROOK));
+    auto out = maskGetType(type);
     switch (out) {
         case Pieces::KING:
             index = 0;

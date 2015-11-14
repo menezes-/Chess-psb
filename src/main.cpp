@@ -18,7 +18,6 @@ int main(int argc, char **argv) {
     board.initBoard();
 
 
-    sf::Clock clock;
     /*
      * Esse código só roda se o programa for compilado em modo de bug
      * ele exibe um texto do lado do ponteiro do mouse mostrando a posição
@@ -61,8 +60,6 @@ int main(int argc, char **argv) {
             }
 
         }
-        sf::Time elapsed = clock.restart();
-        board.update(elapsed);
         window.clear(sf::Color::White);
         window.draw(board);
 #ifndef NDEBUG
@@ -75,12 +72,4 @@ int main(int argc, char **argv) {
 }
 
 
-#if defined(_WIN32) && defined(NDEBUG)
-#include <windows.h>
-
-INT WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, INT) {
-    return main(__argc, __argv);
-}
-
-#endif
 

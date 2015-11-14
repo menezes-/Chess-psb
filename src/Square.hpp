@@ -18,6 +18,8 @@ private:
     sf::Vector2u board_size;
     sf::RectangleShape sprite;
 
+    sf::Color highlightColor = sf::Color::Yellow;
+
 
     void setSpritePosition();
 
@@ -39,6 +41,7 @@ public:
 
     sf::Vector2i getBoardPos() const;
 
+    void setHighlight(const sf::Color &);
     void setHighlight(bool v);
 
     Square(const sf::Vector2i &board_pos, const sf::Vector2u &board_size);

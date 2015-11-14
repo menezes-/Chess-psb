@@ -36,25 +36,35 @@ void PieceSelectedState::handleEvent(Board &board, sf::Event event) {
 
     if (event.mouseButton.button == sf::Mouse::Left) {
         Square *target = getClickedSquare(board, event);
+        bool win = false;
         if (target && selected->getPiece()->getType()[0] == playing /*garante que é a minha vez*/) {
 
             //garente que eu estou movendo a peça para um lugar válido
             auto result = std::find(last_valid_positions.begin(), last_valid_positions.end(), target->getBoardPos());
             if (result != std::end(last_valid_positions)) {
 
-                // Move a peça de lugar e remove
-                // a referencia do quadrado original
-                selected->getPiece()->moveTo(target);
-                selected->setPiece(nullptr);
+                // verifica se o jogador ganhou
+                Piece *targetPiece = target->getPiece();
+                if (targetPiece) {
+                    auto type = targetPiece->getType();
+                    if (maskGetType(type) == KING && type[0] != playing) {
+                        win = true;
+                    }
+                }
 
                 // troca para o próximo jogador
                 playing = !playing;
-                //atualiza texto informativo
+                // atualiza texto informativo
                 if (playing) {
                     board.setDisplayText("Pretas Jogam");
                 } else {
                     board.setDisplayText("Brancas Jogam");
                 }
+
+                // Move a peça de lugar e remove
+                // a referencia do quadrado original
+                selected->getPiece()->moveTo(target);
+                selected->setPiece(nullptr);
 
                 /*
                  * poderia pegar uma  const  referencia ao unique_ptr (ao invés do get), procurar ele no array de peças
@@ -66,13 +76,46 @@ void PieceSelectedState::handleEvent(Board &board, sf::Event event) {
 
 
         }
-
         auto &internal_board = board.getBoard();
+
+        // Desmarca as peças previamente marcadas
         for (auto &i:last_valid_positions) {
             internal_board[getArrayPos(i.x, i.y)]->setHighlight(false);
         }
 
-        board.setBoardState(NORMAL);
+        EState to_state = NORMAL;
+
+        if (win) {
+
+
+            /*
+             * o código que lida com um clique válido sempre inverte os jogadores
+             * (pois se eu invertesse os jogadores aqui a pessoa poderia NÃO fazer uma jogada (ex: cliando em um quadrado
+             * inválido) e o código ia mudar o jogador atual, o que seria errado) e como
+             * a variável win só é setada em um código válido, podemos assumir que o cara que fez a jogada
+             * é o jogador anterior, ou seja, a negação da variável playing
+             *
+             */
+            playing = !playing;
+
+            for (auto &i:internal_board) {
+                //marca todas as peças do jogador que ganhou
+                if (i->getPiece() && i->getPiece()->getType()[0] == playing) {
+                    i->setHighlight(sf::Color::Green);
+                }
+
+            }
+
+            if (playing) {
+                board.setDisplayText("Pretas Ganharam!");
+            } else {
+                board.setDisplayText("Brancas Ganharam!");
+            }
+
+            to_state = WIN;
+        }
+        board.setBoardState(to_state);
+
 
 
     }
@@ -103,5 +146,9 @@ Square *BoardState::getClickedSquare(Board &board, sf::Event event) const {
 
     }
     return res;
+
+}
+
+void WinState::handleEvent(Board &board, sf::Event event) {
 
 }

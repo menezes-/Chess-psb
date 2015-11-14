@@ -7,6 +7,7 @@ Board::Board(ResourceManager &rm) : rm{rm} {
 
     normalState = std::unique_ptr<NormalState>(new NormalState);
     pieceSelectedState = std::unique_ptr<PieceSelectedState>(new PieceSelectedState);
+    winState = std::unique_ptr<WinState>(new WinState);
     state = normalState.get();
     display_text.setFont(rm.getFont());
     display_text.setCharacterSize(12);
@@ -105,26 +106,18 @@ void Board::setBoardState(EState state) {
         case NORMAL:
             Board::state = normalState.get();
             break;
-        case MOVING_PIECE:
-            break;
         case PIECE_SELECTED:
             Board::state = pieceSelectedState.get();
             break;
         case WIN:
-            break;
-        default:
+            Board::state = winState.get();
             break;
     }
 
 }
 
 
-void Board::update(sf::Time time) {
 
-
-    state->update(*this, time);
-
-}
 
 void Board::mousePressed(sf::Event event) {
 
@@ -140,8 +133,7 @@ Piece *Board::makePiece(PieceType type, sf::Vector2i board_pos) {
 
     std::unique_ptr<Piece> piece;
 
-    auto out = ((type.to_ulong()) &
-                (Pieces::KING | Pieces::QUEEN | Pieces::BISHOP | Pieces::KNIGHT | Pieces::PAWN | Pieces::ROOK));
+    auto out = maskGetType(type);
     switch (out) {
         case Pieces::KING:
             piece = std::unique_ptr<Piece>{new King{type, rm}};
@@ -160,8 +152,6 @@ Piece *Board::makePiece(PieceType type, sf::Vector2i board_pos) {
             break;
         case Pieces::PAWN:
             piece = std::unique_ptr<Piece>{new Pawn{type, rm}};
-            break;
-        default:
             break;
     }
     piece->setBoardPos(board_pos);

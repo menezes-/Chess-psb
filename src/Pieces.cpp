@@ -1,6 +1,16 @@
 #include "Pieces.hpp"
 #include "utils.hpp"
 
+
+unsigned long int maskGetType(PieceType type) {
+
+    static auto mask = PieceType{
+            Pieces::KING | Pieces::QUEEN | Pieces::BISHOP | Pieces::KNIGHT | Pieces::PAWN | Pieces::ROOK};
+
+    return ((type) & mask).to_ulong();
+
+}
+
 Piece::Piece(PieceType piece, ResourceManager &manager) : type{piece}, manager{manager},
                                                           sprite{manager.loadPiece(type)} {
 }
@@ -275,11 +285,6 @@ void Piece::moveTo(Square *square) {
 void Pawn::moveTo(Square *square) {
     first_move = false;
     Piece::moveTo(square);
-
-}
-
-sf::Vector2i Piece::getBoardPos() const {
-    return board_pos;
 
 }
 
