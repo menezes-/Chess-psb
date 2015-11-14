@@ -34,7 +34,6 @@ Pawn::Pawn(const PieceType &piece, ResourceManager &manager) : Piece{piece, mana
 }
 
 std::vector<sf::Vector2i> King::validPositions(const InternalBoard &board) {
-    auto valid = std::vector<sf::Vector2i>{};
 
     //precisa de {{ até o c++14 (http://www.open-std.org/JTC1/SC22/WG21/docs/papers/2013/n3526.html)
     static std::array<std::array<int, 2>, 8> offsets = {{
@@ -290,10 +289,13 @@ std::vector<sf::Vector2i> Piece::computeOffsetPositions(const InternalBoard &boa
     auto valid = std::vector<sf::Vector2i>();
     for (auto i: offsets) {
         // garante que eu não passe dos limites
-        //  TODO: dar um continue no for se não da erro quando a peça chega perto 
         // das bordas
-        int x = std::max(0, std::min(i[0] + board_pos.x, 7));
-        int y = std::max(0, std::min(i[1] + board_pos.y, 7));
+        int x = i[0] + board_pos.x;
+        int y = i[1] + board_pos.y;
+        // pula posições inválidas
+        if (x < 0 || x > 7 || y < 0 || y > 7) {
+            continue;
+        }
 
         Piece *piece = board[getArrayPos(x, y)]->getPiece();
         if (piece) {
