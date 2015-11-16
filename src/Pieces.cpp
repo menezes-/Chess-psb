@@ -60,17 +60,22 @@ std::vector<sf::Vector2i> King::validPositions(const InternalBoard &board) {
     return Piece::computeOffsetPositions(board, board_pos, type, offsets);
 }
 
-std::vector<sf::Vector2i> Queen::validPositions(const InternalBoard &board) {
+std::vector<sf::Vector2i> Queen::getPositions(int x, int y, PieceType type, const InternalBoard &board) {
     auto valid = std::vector<sf::Vector2i>();
 
-    auto r = Rook::getPositions(board_pos.x, board_pos.y, type, board);
-    auto b = Bishop::getPositions(board_pos.x, board_pos.y, type, board);
+    auto r = Rook::getPositions(x, y, type, board);
+    auto b = Bishop::getPositions(x, y, type, board);
 
     std::move(r.begin(), r.end(), std::back_inserter(valid));
     std::move(b.begin(), b.end(), std::back_inserter(valid));
 
 
     return valid;
+
+}
+
+std::vector<sf::Vector2i> Queen::validPositions(const InternalBoard &board) {
+    return Queen::getPositions(board_pos.x, board_pos.y, type, board);
 }
 
 
@@ -215,6 +220,20 @@ std::vector<sf::Vector2i> Rook::validPositions(const InternalBoard &board) {
 
 std::vector<sf::Vector2i> Pawn::validPositions(const InternalBoard &board) {
     std::vector<sf::Vector2i> valid_positions = std::vector<sf::Vector2i>{};
+
+    /*
+     *  Gambiarra para lidar com a promoção pra rainha
+     *
+     */
+
+    // crise de identidade
+    if (maskGetType(type) == QUEEN) {
+
+        // se eu sou uma rainha então se comporte como uma rainha
+        return Queen::getPositions(board_pos.x, board_pos.y, type, board);
+    }
+
+
     int modifier = type[0] ? -1 : 1;
     auto x = board_pos.x;
     auto y = board_pos.y;
@@ -317,5 +336,12 @@ std::vector<sf::Vector2i> Piece::computeOffsetPositions(const InternalBoard &boa
 
 
     return valid;
+
+}
+
+void Piece::setType(const PieceType &type) {
+
+    this->type = type;
+    sprite = manager.loadPiece(type);
 
 }

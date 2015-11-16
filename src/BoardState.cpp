@@ -43,14 +43,37 @@ void PieceSelectedState::handleEvent(Board &board, sf::Event event) {
             auto result = std::find(last_valid_positions.begin(), last_valid_positions.end(), target->getBoardPos());
             if (result != std::end(last_valid_positions)) {
 
-                // verifica se o jogador ganhou
+
                 Piece *targetPiece = target->getPiece();
                 if (targetPiece) {
+                    // verifica se o jogador ganhou
                     auto type = targetPiece->getType();
                     if (maskGetType(type) == KING && type[0] != playing) {
                         win = true;
                     }
+
                 }
+
+
+                // verifica promoção do peão (somente para rainha)
+                // (teoricamente o usuário poderia selecionar uma peça)
+                Piece *selectedPiece = selected->getPiece();
+                auto stype = selectedPiece->getType();
+                if (maskGetType(stype) == PAWN && (target->getBoardPos().y == 0 || target->getBoardPos().y == 7)) {
+
+                    // brancas
+                    if (!stype[0] && target->getBoardPos().y == 7) {
+                        auto nt = PieceType{QUEEN};
+                        selectedPiece->setType(nt);
+
+                    } else if (stype[0] && target->getBoardPos().y == 0) {
+                        auto nt = PieceType{(QUEEN | BLACK)};
+                        selectedPiece->setType(nt);
+
+                    }
+
+                }
+
 
                 // troca para o próximo jogador
                 playing = !playing;

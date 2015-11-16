@@ -11,6 +11,7 @@ class ResourceManager;
 class Square;
 
 enum Pieces : short {
+    BLACK = 1, //modificador pra peças pretas
     KING = 2,
     QUEEN = 4,
     BISHOP = 6,
@@ -28,7 +29,7 @@ using PieceType = std::bitset<7>;
 
 using InternalBoard = std::array<std::unique_ptr<Square>, 64>;
 
-unsigned long int maskGetType(PieceType);
+unsigned long int maskGetType(PieceType) __attribute__((pure));
 
 class Piece : public sf::Drawable {
 
@@ -58,6 +59,7 @@ public:
 
     virtual void moveTo(Square *);
 
+    void setType(const PieceType &);
 
     virtual std::vector<sf::Vector2i> validPositions(const InternalBoard &) = 0;
 
@@ -87,6 +89,7 @@ class Queen final : public Piece {
 public:
     Queen(const PieceType &piece, ResourceManager &manager);
 
+    static std::vector<sf::Vector2i> getPositions(int x, int y, PieceType type, const InternalBoard &board);
     std::vector<sf::Vector2i> validPositions(const InternalBoard &);
 };
 
