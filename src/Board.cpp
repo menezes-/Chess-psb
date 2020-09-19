@@ -1,3 +1,4 @@
+#include <memory>
 #include <vector>
 #include "Board.hpp"
 #include "utils.hpp"
@@ -5,14 +6,14 @@
 
 Board::Board(ResourceManager &rm) : rm{rm} {
 
-    normalState = std::unique_ptr<NormalState>(new NormalState);
-    pieceSelectedState = std::unique_ptr<PieceSelectedState>(new PieceSelectedState);
-    winState = std::unique_ptr<WinState>(new WinState);
+    normalState = std::make_unique<NormalState>();
+    pieceSelectedState = std::make_unique<PieceSelectedState>();
+    winState = std::make_unique<WinState>();
     state = normalState.get();
     display_text.setFont(rm.getFont());
     display_text.setCharacterSize(12);
     display_text.setPosition(3, 600);
-    display_text.setColor(sf::Color::Black);
+    display_text.setFillColor(sf::Color::Black);
     display_text.setString("Brancas Jogam");
 
 
@@ -21,7 +22,7 @@ Board::Board(ResourceManager &rm) : rm{rm} {
 
 void Board::draw(sf::RenderTarget &target, sf::RenderStates states) const {
 
-    for (auto &s: board) {
+    for (const auto &s: board) {
         s->draw(target, states);
     }
 

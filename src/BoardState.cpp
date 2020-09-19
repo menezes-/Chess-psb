@@ -16,8 +16,8 @@ void NormalState::handleEvent(Board &board, sf::Event event) {
     if (event.mouseButton.button == sf::Mouse::Left) {
 
         Square *res = getClickedSquare(board, event);
-        if (res && res->getPiece()) {
-            auto &internal_board = board.getBoard();
+        if ((res != nullptr) && (res->getPiece() != nullptr)) {
+            const auto &internal_board = board.getBoard();
             std::vector<sf::Vector2i> pos = res->getPiece()->validPositions(internal_board);
 
             for (auto &i: pos) {
@@ -37,7 +37,7 @@ void PieceSelectedState::handleEvent(Board &board, sf::Event event) {
     if (event.mouseButton.button == sf::Mouse::Left) {
         Square *target = getClickedSquare(board, event);
         bool win = false;
-        if (target && selected->getPiece()->getType()[0] == playing /*garante que é a minha vez*/) {
+        if ((target != nullptr) && selected->getPiece()->getType()[0] == playing /*garante que é a minha vez*/) {
 
             //garente que eu estou movendo a peça para um lugar válido
             auto result = std::find(last_valid_positions.begin(), last_valid_positions.end(), target->getBoardPos());
@@ -45,7 +45,7 @@ void PieceSelectedState::handleEvent(Board &board, sf::Event event) {
 
 
                 Piece *targetPiece = target->getPiece();
-                if (targetPiece) {
+                if (targetPiece != nullptr) {
                     // verifica se o jogador ganhou
                     auto type = targetPiece->getType();
                     if (maskGetType(type) == KING && type[0] != playing) {
@@ -99,7 +99,7 @@ void PieceSelectedState::handleEvent(Board &board, sf::Event event) {
 
 
         }
-        auto &internal_board = board.getBoard();
+        const auto &internal_board = board.getBoard();
 
         // Desmarca as peças previamente marcadas
         for (auto &i:last_valid_positions) {
@@ -121,9 +121,9 @@ void PieceSelectedState::handleEvent(Board &board, sf::Event event) {
              */
             playing = !playing;
 
-            for (auto &i:internal_board) {
+            for (const auto &i:internal_board) {
                 //marca todas as peças do jogador que ganhou
-                if (i->getPiece() && i->getPiece()->getType()[0] == playing) {
+                if ((i->getPiece() != nullptr) && i->getPiece()->getType()[0] == playing) {
                     i->setHighlight(sf::Color::Green);
                 }
 
@@ -144,8 +144,8 @@ void PieceSelectedState::handleEvent(Board &board, sf::Event event) {
     }
 }
 
-void PieceSelectedState::setLastValidPos(const std::vector<sf::Vector2i> &last_valid_positions) {
-    PieceSelectedState::last_valid_positions = last_valid_positions;
+void PieceSelectedState::setLastValidPos(const std::vector<sf::Vector2i> &l_valid_positions) {
+    last_valid_positions = l_valid_positions;
 }
 
 void PieceSelectedState::setSelectedPiece(Square *s) {
@@ -159,8 +159,8 @@ Square *BoardState::getClickedSquare(Board &board, sf::Event event) const {
     if (event.mouseButton.button == sf::Mouse::Left) {
 
 
-        auto &internal_board = board.getBoard();
-        for (auto &square: internal_board) {
+        const auto &internal_board = board.getBoard();
+        for (const auto &square: internal_board) {
             if (square->getSprite().getGlobalBounds().contains(event.mouseButton.x, event.mouseButton.y)) {
                 res = square.get();
                 break;

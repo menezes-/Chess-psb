@@ -26,7 +26,7 @@ int main(int argc, char **argv) {
 #ifndef NDEBUG
     sf::Text debug;
     debug.setFont(rm.getFont());
-    debug.setColor(sf::Color::Red);
+    debug.setFillColor(sf::Color::Red);
     debug.setCharacterSize(12);
     std::ostringstream mousePos;
 

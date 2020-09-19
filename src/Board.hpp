@@ -46,7 +46,7 @@ private:
     Square* selected;
 
     // lembra quem está jogando brancas (0) ou pretas (1)
-    bool playing = 0;
+    bool playing = false;
 
 
 public:
